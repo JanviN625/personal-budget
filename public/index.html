@@ -128,15 +128,7 @@
                 datasets: [
                     {
                         data: [],
-                        backgroundColor: [
-                            '#ffcd56',
-                            '#ff6384',
-                            '#36a2eb',
-                            '#fd6b19',
-                            '#4bc0c0',
-                            '#9966ff',
-                            '#ff9f40'
-                        ]
+                        backgroundColor: []
                     }
                 ],
                 labels: []
@@ -153,9 +145,10 @@
         function getBudget() {
             axios.get('http://localhost:3000/budget')
             .then(function (res) {
-                for (var i = 0; i < res.data.myBudget.length; i++) {
-                    dataSource.datasets[0].data[i] = res.data.myBudget[i].budget;
-                    dataSource.labels[i] = res.data.myBudget[i].title;
+                for (var i = 0; i < res.data.length; i++) {
+                    dataSource.datasets[0].data[i] = res.data[i].budget;
+                    dataSource.labels[i] = res.data[i].title;
+                    dataSource.datasets[0].backgroundColor[i] = res.data[i].color;
                 }
                 createChart();
             });
@@ -188,7 +181,7 @@
         axios.get("http://localhost:3000/budget")
             .then(function (res) {
                 var g = svg.selectAll('.arc')
-                    .data(pie(res.data.myBudget))
+                    .data(pie(res.data))
                     .enter().append('g')
                     .attr('class', 'arc');
 
